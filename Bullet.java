@@ -18,6 +18,11 @@ public class Bullet extends Actor
     {
         speedX = sX;
         speedY = sY;
+        if(sX < 0 && sY == 0) turn(180);
+        else if(sY > 0 && sX == 0) turn(-90);
+        else if(sY> 0 && sX > 0) turn(-45);
+        else if(sY > 0 && sX < 0) turn(-135);
+        
     }
 
     public void act() 

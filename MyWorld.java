@@ -15,7 +15,7 @@ public class MyWorld extends World
     public int platSpawn3x = 400;
     public int platSpawn4x = 500;
     public int platSpawn5x = 600;
-    private int coinsToEnd;
+    public int coinsToEnd;
     int bossTimer;
     private int twoSpawnsAgo;
     //int bossTimeSpawn;
@@ -26,17 +26,21 @@ public class MyWorld extends World
     int count = 0;
     public int n = 0;
     private Player main;
+    /*int coinPlayer;
+    int healthPlayer;
+    boolean drunk;*/
     private boolean endless;
     public int platformWidth;
     /**
      * Constructor for objects of class MyWorld.
      * 
      */
-    public MyWorld(int boss, int c)
+    public MyWorld(int boss, int c, int coinP, int healthP, boolean d, boolean t, boolean s)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(600, 400, 1, false); 
         coinsToEnd = c;
+       
         setPaintOrder(Life.class,Counter.class,Player.class,Coin.class,Bullet.class,Enemy.class);
         bossTimer = boss;
         Platform bottom = new Platform(1, 400, 1);
@@ -47,12 +51,12 @@ public class MyWorld extends World
         int height = image.getHeight();
         image.scale(600,height);
         int n = 0;
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < healthP; i++){
             Life l = new Life(i);
             addObject(l, 30+n, 20);
             n+=25;
         }
-        main = new Player();
+        main = new Player( coinP,  healthP,  d, t, s);
         GreenfootImage mainImg = main.getImage();
         int playerHeight = (mainImg.getHeight());
         addObject(main, 300, 395-playerHeight);
@@ -70,7 +74,7 @@ public class MyWorld extends World
             //health+=10;
             Greenfoot.setWorld(new BossWorld(main));
         }
-        if(coinsToEnd == main.getCoins()){
+        if(coinsToEnd <= main.getCoins() && coinsToEnd != -1){
             Greenfoot.setWorld(new BossWorld(main));
         }
         timer++;

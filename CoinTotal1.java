@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import java.util.*;
 /**
  * Write a description of class CoinTotal1 here.
  * 
@@ -13,22 +13,48 @@ public class CoinTotal1 extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     String coinsString;
+    public Two two;
+    public Endless end;
+    GreenfootImage img;
     int coinsInt;
+    boolean jojo = false;
+    GreenfootImage baseImage;
+    public CoinTotal1(){
+        coinsInt = 10;
+        baseImage = new GreenfootImage(Integer.toString(coinsInt), 25, Color.BLACK, Color.WHITE);
+        img = new GreenfootImage(Integer.toString(coinsInt), 35, Color.BLACK, Color.WHITE);
+        setImage(baseImage);
+    }
+
     public void act() 
     {
+        List<Two> twoList = getObjectsInRange(600, Two.class);
+        two = twoList.get(0);
+        List<Endless> endList = getObjectsInRange(600, Endless.class);
+        end = endList.get(0);
         if(Greenfoot.mouseClicked(this)){
-            coinsString = Greenfoot.ask("How many coins? (enter a number greater than 0)");
-            coinsInt = parseWithDefault(coinsString, -1);
+            coinsString = Greenfoot.ask("How many coins? (enter a number greater than 0, defaults to 10)");
+            coinsInt = parseWithDefault(coinsString, 10);
+            if(coinsInt <= 0) coinsInt = 10;
+            
+            if(coinsString != null){
+                
+                GreenfootImage img = new GreenfootImage(Integer.toString(coinsInt), 30, Color.BLACK, Color.WHITE);
+                setImage(img);
+            }
+        }
+        else if(Greenfoot.mouseClicked(end) ||Greenfoot.mouseClicked(two)  ){
+            setImage(baseImage);
+        }
 
-        }
-        if(coinsString != null){
-            GreenfootImage img = new GreenfootImage(coinsString, 48, Color.BLACK, Color.WHITE);
-            setImage(img);
-        }
     }    
 
     public int getCoins(){
         return coinsInt;
+    }
+
+    public String getString(){
+        return coinsString;
     }
 
     public static int parseWithDefault(String number, int defaultVal) {

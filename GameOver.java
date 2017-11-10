@@ -13,10 +13,19 @@ public class GameOver extends World
      * Constructor for objects of class GameOver.
      * 
      */
+    GreenfootSound dead;
     public GameOver()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(600, 400, 1); 
-        if(Greenfoot.getKey() != null) Greenfoot.setWorld(new TitleScreen());
+        dead = new GreenfootSound("Dead.wav"); 
+        dead.play();
+    }
+
+    public void act(){
+        if(Greenfoot.getKey() != null) {
+            dead.stop();
+            Greenfoot.setWorld(new TitleScreen());
+        }
     }
 }

@@ -21,7 +21,7 @@ public class BossWorld extends World
         addObject(new Platform(0, 0, 2), 150, 300);
         addObject(new Platform(0, 0, 5), 300, 395);
         addObject(new Platform(0, 0, 1.4), 300, 200);
-        addObject(new Player(), 300, 130);
+        addObject(p, 300, 130);
         addObject(new Boss(), 550, 150);
         int n = 0;
         for(int i = 0; i < p.getHealth(); i++){

@@ -16,14 +16,23 @@ public class TitleScreen extends World
     Two t = new Two();
     Endless e = new Endless();
     CoinTotal1 c = new CoinTotal1();
-    int coinsToEnd;
+    int coinsToEnd = 0;
     //StringInputBox text = new StringInputBox();
     int timer;
+    public boolean meme;
+    GifImage backgroundGif;
+    int coinPlayer = 0;
+    int healthPlayer = 3;
+    boolean drunk = false;
     boolean chosen;
+    boolean sanic = false;
+    boolean teleporting;
     public TitleScreen()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(600, 400, 1); 
+        backgroundGif = new GifImage("ba3.gif");
+       
         addObject(c,300,235);
         addObject(t, 125, 105);
         addObject(e, 455, 105);
@@ -33,6 +42,7 @@ public class TitleScreen extends World
     }
 
     public void act(){
+        
         if(Greenfoot.mouseClicked(t)){
             timer = t.getTimer();
             coinsToEnd = -1;
@@ -45,12 +55,28 @@ public class TitleScreen extends World
         }
         else if(Greenfoot.mouseClicked(c)){
             timer = -1;
-
             chosen = true;
+            
+            coinsToEnd = c.getCoins();
         }
-        coinsToEnd = c.getCoins();
-        if(Greenfoot.getKey() == ("enter") && chosen && coinsToEnd != 0 && coinsToEnd != -1){
-            Greenfoot.setWorld(new MyWorld(timer, coinsToEnd));
+        if(c.getString() != null){
+            if(c.getString().equals("jojo")){
+                GreenfootImage img = backgroundGif.getCurrentImage();
+                img.scale(600, 400);
+                setBackground(img);
+                meme = true;
+            }
+            if(c.getString().equals("crackacoldone")) drunk = true;
+            if(c.getString().equals("greedisgood")) coinPlayer = 500;
+            if(c.getString().equals("healthyliving")) healthPlayer = 5;
+            if(c.getString().equals("godly")) healthPlayer = 10;
+            if(c.getString().equals("kryptonite")) healthPlayer = 1;
+            if(c.getString().equals("whereami")) teleporting = true;
+            if(c.getString().equals("killme"))Greenfoot.setWorld(new GameOver());
+            if(c.getString().equals("sanic")) sanic = true;
+        }
+        if(Greenfoot.getKey() == ("enter") && chosen){
+            Greenfoot.setWorld(new MyWorld(timer, coinsToEnd,  coinPlayer,  healthPlayer,  drunk, teleporting, sanic));
         }
     }
 

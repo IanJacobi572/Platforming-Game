@@ -41,20 +41,37 @@ public class Player extends Actor
     int worldWidth;
     int invulnTime;
     private int health;
+    boolean teleporting;
+    int timer;
+    boolean drunk;
     int coins;
     int oldLife;
+    boolean sanic;
+    //private int n;
     boolean gotLife;
     int lifeMult;
-    public Player(){
+    public Player(int coinP, int healthP, boolean d, boolean t, boolean s){
+        timer = 0;
+        teleporting = t;
+        coins = coinP;
+        health = healthP;
+        drunk =d;
+        //n = 0;
         left = new GreenfootImage("wizL.png");
         right = new GreenfootImage("wizR.png");
+        sanic = s;
         setImage(right);
         jumpHeight = 12;
         doubleJumpHeight = 10;
         walkSpeed = 5;
+        if(d){
+            walkSpeed = -5;
+            right = new GreenfootImage("wizL.png");
+            left = new GreenfootImage("wizR.png");
+        }
+        if(s) walkSpeed = 20;
         fallSpeed = .85;
-        GreenfootImage left;
-        GreenfootImage right;
+
         inTheAir = false;
         dX = 0;
         dY = 0;
@@ -74,24 +91,35 @@ public class Player extends Actor
         this.worldHeight = myWorld.getHeight();
         this.worldWidth = myWorld.getWidth();
         invulnTime = 0;
-        health = 3;
-        coins = 0;
+        //health = 3;
+        //coins = 0;
     }
 
     public void act() 
     {
+        
+        if(drunk && !sanic) walkSpeed = Greenfoot.getRandomNumber(5) *-1;
+        else if(drunk && sanic){
+             walkSpeed = Greenfoot.getRandomNumber(20) * -2;
+        }
+        if(teleporting && timer == 120){
+            spawnAtRandomPlat();
+            timer = 0;
+        }
         getKey();  
         move(); 
         fallBelow();
         hit();
         shootDirection();
         //if(inTheAir) fall();
+
         if(!inTheAir) jumped = false;
         pickUpCoins();
         checkForNewLife();
         shootCount++;
         if(invulnTime > 0) invulnTime--;
         bossTimer++;
+        timer ++;
     }
 
     private void fallBelow(){
@@ -120,30 +148,31 @@ public class Player extends Actor
         }
     }
 
-    /*private void spawnAtRandPlat(){
+    private void spawnAtRandomPlat(){
 
-    List<Platform> platsInRange = getObjectsInRange(500, Platform.class);
-    if(platsInRange != null){ 
-    int randomPlat = Greenfoot.getRandomNumber(platsInRange.size());
-    Platform p = platsInRange.get(randomPlat);
-    if(p!=previousPlatform && p.getY() < worldHeight){
-    takeDamage();
+        List<Platform> platsInRange = getObjectsInRange(500, Platform.class);
+        if(platsInRange != null){ 
+            int randomPlat = Greenfoot.getRandomNumber(platsInRange.size());
+            Platform p = platsInRange.get(randomPlat);
+            if(p!=previousPlatform && p.getY() < worldHeight){
+                //takeDamage();
 
-    if(p.getX() >= 600){
-    setLocation(p.getX()-10, p.getY()-groundHeight);
+                if(p.getX() >= 600){
+                    setLocation(p.getX()-10, p.getY()-groundHeight);
 
-    }
-    else if(p.getX() <= 0){
-    setLocation(p.getX()+10, p.getY()-groundHeight);
+                }
+                else if(p.getX() <= 0){
+                    setLocation(p.getX()+10, p.getY()-groundHeight);
 
-    }
-    else{
-    setLocation(p.getX(), p.getY()-groundHeight);
-    }
+                }
+                else{
+                    setLocation(p.getX(), p.getY()-groundHeight);
+                }
+            }
+
+        }
     }
 
-    }
-    }*/
     private void spawnAtTopPlat(){
         //Platform top = null;
         //Platform last = null;
@@ -178,7 +207,7 @@ public class Player extends Actor
     private void takeDamage(){  //Subtracts health and removes highest heart
         if(invulnTime == 0){
             health--;
-
+            Greenfoot.playSound("Hit_Hurt.wav");
             invulnTime = 45;
         }
         List <Life> lives = getObjectsInRange(700,Life.class);
@@ -187,17 +216,21 @@ public class Player extends Actor
                 getWorld().removeObject(l);
             }
         }
-        if(health == 0) Greenfoot.setWorld(new GameOver());
+        if(health == 0){
+            
+            Greenfoot.setWorld(new GameOver());
+        }
     }
 
     private void shoot(int speedX, int speedY){
         int leftHand = getX()-getImage().getWidth()/2;
         int rightHand = getX()+getImage().getWidth()/2;
-
+        
         if ( shootCount >= 25){
 
             if(shootL){
-                setImage(left);
+                if(!drunk) setImage(left);
+                else if(drunk) setImage(right);
                 if(!shootUp){
                     getWorld().addObject(new Bullet(speedX, speedY), leftHand, getY());
 
@@ -207,7 +240,8 @@ public class Player extends Actor
                 }
             }
             if (shootR){
-                setImage(right);
+                if(!drunk)setImage(right);
+                if(drunk) setImage(left);
                 if(!shootUp){
                     getWorld().addObject(new Bullet(speedX, speedY), rightHand, getY());
                 }
@@ -226,6 +260,7 @@ public class Player extends Actor
                 }
             }
             shootCount = 0;
+            Greenfoot.playSound("Shoot.wav");
         }
     }
 
@@ -317,7 +352,7 @@ public class Player extends Actor
     }
 
     private void shootDirection(){
-        if(Greenfoot.isKeyDown("left")){
+        if(Greenfoot.isKeyDown("left") && !drunk){
             shootL = true;
             shootR = false;
             if(Greenfoot.isKeyDown("up")){
@@ -327,7 +362,7 @@ public class Player extends Actor
             else shoot(-4, 0);
             //shootUp = false;
         }
-        else if(Greenfoot.isKeyDown("right")){
+        else if(Greenfoot.isKeyDown("right") && !drunk){
             shootL = false;
             shootR = true;
             if(Greenfoot.isKeyDown("up")){
@@ -336,7 +371,25 @@ public class Player extends Actor
             }
             else shoot(4, 0);
         }
-
+        else if(Greenfoot.isKeyDown("right") && drunk){
+            shootL = true;
+            shootR = false;
+            if(Greenfoot.isKeyDown("up")){
+                shootUp = true;
+                shoot(-4,4);
+            }
+            else shoot(-4, 0);
+            //shootUp = false;
+        }
+        else if(Greenfoot.isKeyDown("left") && drunk){
+            shootL = false;
+            shootR = true;
+            if(Greenfoot.isKeyDown("up")){
+                shootUp = true;
+                shoot(4,4);
+            }
+            else shoot(4, 0);
+        }
         if(Greenfoot.isKeyDown("up")){
             shootUp = true;
             shootL = false;
@@ -397,6 +450,7 @@ public class Player extends Actor
 
             }
             health++;
+            Greenfoot.playSound("NewLife.wav");
             lifeMult++;
         }
     }
