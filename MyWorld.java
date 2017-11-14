@@ -31,6 +31,8 @@ public class MyWorld extends World
     boolean drunk;*/
     private boolean endless;
     public int platformWidth;
+    boolean rero = false;
+    boolean john = false;
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -45,7 +47,10 @@ public class MyWorld extends World
         bossTimer = boss;
         Platform bottom = new Platform(1, 400, 1);
         addObject(bottom, 300, 395);
-        actCounter = new Counter("Coins: ");
+        String coins;
+        if(coinP == 500)  coins = "Gold: ";
+        else coins = "Coins: ";
+        actCounter = new Counter("a");
         addObject(actCounter, 540, 20);
         GreenfootImage image = bottom.getImage();
         int height = image.getHeight();
@@ -68,7 +73,7 @@ public class MyWorld extends World
             platSpawn();
             n++;
         }
-
+        continuePlayingFromTitle();
         actCounter.setValue(main.getCoins());
         if(timer == bossTimer){
             //health+=10;
@@ -149,5 +154,10 @@ public class MyWorld extends World
         //}
         spawnLocationLast = spawnLocation;
     }
-
+    private void continuePlayingFromTitle(){
+        if(TitleScreen.rero.isPlaying()) rero = true;
+        if(rero && !TitleScreen.rero.isPlaying()) TitleScreen.rero.play();
+        if(TitleScreen.johnCena.isPlaying()) john = true;
+        if(john && !TitleScreen.johnCena.isPlaying()) TitleScreen.johnCena.play();
+    }
 }

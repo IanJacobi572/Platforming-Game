@@ -29,7 +29,9 @@ public class BossWorld extends World
             addObject(l, 30+n, 20);
             n+=25;
         }
-        Counter actCounter = new Counter("Coins: ");
+        String coin = "Coins: ";
+        if(p.greed) coin = "Gold: ";
+        Counter actCounter = new Counter(coin);
         addObject(actCounter, 540, 20);
         actCounter.setValue(p.getCoins());
     }

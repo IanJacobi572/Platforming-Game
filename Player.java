@@ -47,7 +47,7 @@ public class Player extends Actor
     int coins;
     int oldLife;
     boolean sanic;
-    //private int n;
+    public boolean greed = false;
     boolean gotLife;
     int lifeMult;
     public Player(int coinP, int healthP, boolean d, boolean t, boolean s){
@@ -55,6 +55,7 @@ public class Player extends Actor
         teleporting = t;
         coins = coinP;
         health = healthP;
+        if(coinP == 500) greed = true;
         drunk =d;
         //n = 0;
         left = new GreenfootImage("wizL.png");
@@ -97,15 +98,8 @@ public class Player extends Actor
 
     public void act() 
     {
-        
-        if(drunk && !sanic) walkSpeed = Greenfoot.getRandomNumber(5) *-1;
-        else if(drunk && sanic){
-             walkSpeed = Greenfoot.getRandomNumber(20) * -2;
-        }
-        if(teleporting && timer == 120){
-            spawnAtRandomPlat();
-            timer = 0;
-        }
+
+        powerUp();
         getKey();  
         move(); 
         fallBelow();
@@ -217,7 +211,7 @@ public class Player extends Actor
             }
         }
         if(health == 0){
-            
+
             Greenfoot.setWorld(new GameOver());
         }
     }
@@ -225,7 +219,7 @@ public class Player extends Actor
     private void shoot(int speedX, int speedY){
         int leftHand = getX()-getImage().getWidth()/2;
         int rightHand = getX()+getImage().getWidth()/2;
-        
+
         if ( shootCount >= 25){
 
             if(shootL){
@@ -455,5 +449,15 @@ public class Player extends Actor
         }
     }
 
+    private void powerUp(){
+        if(drunk && !sanic) walkSpeed = Greenfoot.getRandomNumber(5) *-1;
+        else if(drunk && sanic){
+            walkSpeed = Greenfoot.getRandomNumber(20) * -1;
+        }
+        if(teleporting && timer == 120){
+            spawnAtRandomPlat();
+            timer = 0;
+        }
+    }
 }
 
