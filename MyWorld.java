@@ -50,7 +50,7 @@ public class MyWorld extends World
         String coins;
         if(coinP == 500)  coins = "Gold: ";
         else coins = "Coins: ";
-        actCounter = new Counter("a");
+        actCounter = new Counter(coins);
         addObject(actCounter, 540, 20);
         GreenfootImage image = bottom.getImage();
         int height = image.getHeight();

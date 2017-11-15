@@ -323,6 +323,7 @@ public class Player extends Actor
     private void getKey()
     {
         Enemy e = (Enemy) getOneIntersectingObject(Enemy.class);
+        Boss b = (Boss) getOneIntersectingObject(Boss.class);
         if(Greenfoot.isKeyDown("A"))
         {
             isLeft = true;
@@ -333,7 +334,7 @@ public class Player extends Actor
             isLeft = false;
             setImage(right);
             run();
-        }else if(e== null)
+        }else if(e== null && b == null)
         {
             stop();
         }
@@ -413,6 +414,27 @@ public class Player extends Actor
             takeDamage();
         }
         else if( e == null){
+            canMoveL = true;
+            canMoveR = true;
+        }
+        Boss b = (Boss) getOneIntersectingObject(Boss.class);
+        if(b!= null ){
+            if(b.getX() < getX()){
+                canMoveL = false;
+                dX+=3;
+                dY = 5;
+                inTheAir = true;
+            }
+            else if(b.getX() >= getX()){
+                canMoveR = false;
+                dX-=3;
+                dY = 5;
+                inTheAir = true;
+
+            }
+            takeDamage();
+        }
+        else if( b == null){
             canMoveL = true;
             canMoveR = true;
         }
