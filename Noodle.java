@@ -13,6 +13,8 @@ public class Noodle extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     int speedX;
+    GreenfootImage img;
+    GifImage noodle = new GifImage("noodle.gif");
     int speedY;
     public Noodle(int sX, int sY)
     {
@@ -21,13 +23,16 @@ public class Noodle extends Actor
         if(sX < 0 && sY == 0) turn(180);
         else if(sY > 0 && sX == 0) turn(-90);
         else if(sY> 0 && sX > 0) turn(-45);
+        
         else if(sY > 0 && sX < 0) turn(-135);
+        
         
     }
 
     public void act() 
     {
-        
+        img = noodle.getCurrentImage();
+        setImage(img);
         setLocation(getX()+speedX, getY()-speedY);
         
         

@@ -286,7 +286,7 @@ public class Player extends Actor
 
     private void fall()
     {
-        dY -= fallSpeed;
+        dY -=fallSpeed;
         //inTheAir = true;
     }
     //checks for a platform and falls if it doesnt find one
@@ -296,7 +296,8 @@ public class Player extends Actor
         double newY = getY() - dY;
         if(getX() >= 600) newX = 0 + dX;
         else if(getX() <= 0) newX = 600 + dX;
-        platBelow = (Platform) getOneObjectAtOffset(0,groundHeight + 5,Platform.class);
+        platBelow = (Platform) getOneObjectAtOffset(0,groundHeight +5,Platform.class);
+        if(platBelow == null) platBelow = (Platform) getOneObjectAtOffset(0,groundHeight ,Platform.class);
         if (platBelow != null)
         {
             GreenfootImage platImage = platBelow.getImage();
@@ -338,10 +339,18 @@ public class Player extends Actor
         {
             stop();
         }
-        if (Greenfoot.getKey() == ("space") )
+        if (Greenfoot.getKey() == ("w"))
         {
             if(!inTheAir) jump();
             else if(inTheAir && !jumped) doubleJump();
+        }
+        else if( Greenfoot.getKey() == ("tab"))
+        {
+            if(!inTheAir) jump();
+            else if(inTheAir && !jumped) doubleJump();
+        }
+        else if(Greenfoot.isKeyDown("s")){
+            dY-=1;
         }
 
     }
@@ -432,13 +441,18 @@ public class Player extends Actor
                 inTheAir = true;
 
             }
-            takeDamage();
+            if(b.getY() > getY()) b.takeDamage(true);
+            else if(getY() > b.getY()) takeDamage();
         }
         else if( b == null){
             canMoveL = true;
             canMoveR = true;
         }
-
+        Noodle n = (Noodle) getOneIntersectingObject(Noodle.class);
+        if(n != null){
+            takeDamage();
+            getWorld().removeObject(n);
+        }
     }
 
     private void pickUpCoins(){

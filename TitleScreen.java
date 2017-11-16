@@ -49,21 +49,22 @@ public class TitleScreen extends World
         
         if(Greenfoot.mouseClicked(t)){
             timer = t.getTimer();
-            coinsToEnd = -1;
+            c.coinsInt = -1;
             chosen = true;
         }
         else if(Greenfoot.mouseClicked(e)){
             timer = -1;
-            coinsToEnd = -1;
+            c.coinsInt = -1;
             chosen = true;
         }
         else if(Greenfoot.mouseClicked(c)){
             timer = -1;
             chosen = true;
             
-            coinsToEnd = c.getCoins();
+            
         }
         if(c.getString() != null){
+            //coinsToEnd = c.getCoins();
             if(c.getString().equals("jojo")){
                 GreenfootImage img = backgroundGif.getCurrentImage();
                 img.scale(600, 400);
@@ -88,7 +89,9 @@ public class TitleScreen extends World
             if(c.getString().equals("killme"))Greenfoot.setWorld(new GameOver());
             if(c.getString().equals("sanic")) sanic = true;
         }
+        
         if(Greenfoot.getKey() == ("enter") && chosen){
+            coinsToEnd = c.getCoins();
             Greenfoot.setWorld(new MyWorld(timer, coinsToEnd,  coinPlayer,  healthPlayer,  drunk, teleporting, sanic));
         }
     }

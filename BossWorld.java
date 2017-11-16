@@ -22,7 +22,9 @@ public class BossWorld extends World
         addObject(new Platform(0, 0, 5), 300, 395);
         addObject(new Platform(0, 0, 1.4), 300, 200);
         addObject(p, 300, 130);
-        addObject(new Boss(), 550, 150);
+        if(p.drunk)addObject(new Boss(p), 50, 395);
+        addObject(new Boss(p), 550, 150);
+        //addObject(new BossHealth(10), 300, 50);
         int n = 0;
         for(int i = 0; i < p.getHealth(); i++){
             Life l = new Life(i);
