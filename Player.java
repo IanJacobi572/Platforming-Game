@@ -34,7 +34,6 @@ public class Player extends Actor
     private boolean isLeft;
     private boolean canMoveL;
     private boolean canMoveR;
-    
     private boolean canMoveLB;
     private boolean canMoveRB;
     private int groundHeight;
