@@ -36,7 +36,7 @@ public class TitleScreen extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(600, 400, 1); 
         backgroundGif = new GifImage("ba3.gif");
-        //rickRoll = new GifImage("rickroll.gif");
+        rickRoll = new GifImage("rickroll.gif");
         addObject(c,375,121);
         addObject(t, 375, 65);
         addObject(e, 375, 93);
@@ -74,7 +74,9 @@ public class TitleScreen extends World
                 //meme = true;
             }
             else if(c.getString().equals("nevergonnagiveyouup")){
-                
+                GreenfootImage img = rickRoll.getCurrentImage();
+                img.scale(600, 400);
+                setBackground(img);
                 if(!rick.isPlaying()) rick.play();
                 rick.setVolume(100);
                 

@@ -44,6 +44,7 @@ public class MyWorld extends World
         super(600, 400, 1, false); 
         coinsToEnd = c;
         bite = new GreenfootSound("Bited.mp3");
+        bite.setVolume(60);
         if(!TitleScreen.rero.isPlaying()) bite.play();
         setPaintOrder(Life.class,Counter.class,Player.class,Coin.class,Bullet.class,Enemy.class);
         bossTimer = boss;

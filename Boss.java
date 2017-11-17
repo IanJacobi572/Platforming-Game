@@ -74,8 +74,10 @@ public class Boss extends Actor
             leftBound = true;
 
         }
-        if(main.getY()-getY() >= 100) upperBound = true;
-        else if(main.getY()-getY() <= -100) upperBound = false;
+        if(main.getY()-getY() >= 100 && getY() > 0) upperBound = true;
+        else if(main.getY()-getY() <= -100 && getY() < 400) upperBound = false;
+        else if(getY() > 400) upperBound = false;
+        else if(getY() < 0) upperBound = true;
         if(!isCharging && upperBound) setLocation(getX(), getY()+1);
         else if(!isCharging && !upperBound) setLocation(getX(), getY()-1);
     }

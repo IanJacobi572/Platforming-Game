@@ -19,7 +19,7 @@ public class Two extends Actor
     public CoinTotal1 coin;
     public Two(){
         //GreenfootImage.setFont(Font );
-        
+
         img =getImage();
         img.scale(160, 28);
         baseImg = new GreenfootImage("2 min", 25, Color.BLACK, Color.WHITE);
@@ -33,7 +33,8 @@ public class Two extends Actor
         List<CoinTotal1> coinTotal1 =  getObjectsInRange(600, CoinTotal1.class);
         coin = coinTotal1.get(0);
         if(Greenfoot.mouseClicked(this)){
-GreenfootSound select = new GreenfootSound("Select.wav");
+            GreenfootSound select = new GreenfootSound("Select.wav");
+            select.setVolume(75);
             select.play();
             //setImage(img);
         }

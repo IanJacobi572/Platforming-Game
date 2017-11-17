@@ -31,6 +31,7 @@ public class Endless extends Actor
         if(Greenfoot.mouseClicked(this)){
             //Greenfoot.setWorld(new MyWorld(-1));
             GreenfootSound select = new GreenfootSound("Select.wav");
+            select.setVolume(75);
             select.play();
             //GreenfootImage img = new GreenfootImage("Endless", 30, Color.BLACK, Color.WHITE);
             //setImage(img);
