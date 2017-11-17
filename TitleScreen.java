@@ -37,9 +37,9 @@ public class TitleScreen extends World
         super(600, 400, 1); 
         backgroundGif = new GifImage("ba3.gif");
         //rickRoll = new GifImage("rickroll.gif");
-        addObject(c,300,235);
-        addObject(t, 125, 105);
-        addObject(e, 455, 105);
+        addObject(c,375,121);
+        addObject(t, 375, 65);
+        addObject(e, 375, 93);
         //addObject(text, 300, 300);
         Greenfoot.start();
         prepare();
@@ -70,23 +70,26 @@ public class TitleScreen extends World
                 img.scale(600, 400);
                 setBackground(img);
                 if(!rero.isPlaying()) rero.play();
+                rero.setVolume(100);
                 //meme = true;
             }
             else if(c.getString().equals("nevergonnagiveyouup")){
                 
                 if(!rick.isPlaying()) rick.play();
+                rick.setVolume(100);
                 
             }
             else if(c.getString().equals("youcantseeme")){
                 if(!johnCena.isPlaying()) johnCena.play();
+                johnCena.setVolume(100);
             }
             if(c.getString().equals("crackacoldone")) drunk = true;
             if(c.getString().equals("greedisgood")) coinPlayer = 500;
             if(c.getString().equals("healthyliving")) healthPlayer = 5;
-            if(c.getString().equals("godly")) healthPlayer = 10;
+            if(c.getString().equals("godly") || c.getString().equals("wwssadadqe")) healthPlayer = 10;
             if(c.getString().equals("bonehurtingjuice")) healthPlayer = 1;
             if(c.getString().equals("whereami")) teleporting = true;
-            if(c.getString().equals("killme"))Greenfoot.setWorld(new GameOver());
+            if(c.getString().equals("killme"))Greenfoot.setWorld(new GameOver(true));
             if(c.getString().equals("sanic")) sanic = true;
         }
         

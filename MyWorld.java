@@ -30,6 +30,7 @@ public class MyWorld extends World
     int healthPlayer;
     boolean drunk;*/
     private boolean endless;
+    public static GreenfootSound bite;
     public int platformWidth;
     boolean rero = false;
     boolean john = false;
@@ -42,7 +43,8 @@ public class MyWorld extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(600, 400, 1, false); 
         coinsToEnd = c;
-       
+        bite = new GreenfootSound("Bited.mp3");
+        if(!TitleScreen.rero.isPlaying()) bite.play();
         setPaintOrder(Life.class,Counter.class,Player.class,Coin.class,Bullet.class,Enemy.class);
         bossTimer = boss;
         Platform bottom = new Platform(1, 400, 1);

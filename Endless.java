@@ -17,9 +17,9 @@ public class Endless extends Actor
     GreenfootImage img;
     GreenfootImage baseImg;
     public Endless(){
-        img = new GreenfootImage("Endless", 30, Color.BLACK, Color.WHITE);
-        baseImg = new GreenfootImage("Endless", 25, Color.BLACK, Color.WHITE);
-        setImage(baseImg);
+        img =getImage();
+        img.scale(160, 28);
+        //setImage(baseImg);
     }
 
     public void act() 
@@ -30,12 +30,14 @@ public class Endless extends Actor
         coin = coinList.get(0);
         if(Greenfoot.mouseClicked(this)){
             //Greenfoot.setWorld(new MyWorld(-1));
+            GreenfootSound select = new GreenfootSound("Select.wav");
+            select.play();
             //GreenfootImage img = new GreenfootImage("Endless", 30, Color.BLACK, Color.WHITE);
-            setImage(img);
+            //setImage(img);
         }
         else if(Greenfoot.mouseClicked(two) || Greenfoot.mouseClicked(coin) ){
             //GreenfootImage img = new GreenfootImage("Endless", 20, Color.BLACK, Color.WHITE);
-            setImage(baseImg);
+            //setImage(baseImg);
         }
     }    
 }

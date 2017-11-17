@@ -34,11 +34,15 @@ public class Player extends Actor
     private boolean isLeft;
     private boolean canMoveL;
     private boolean canMoveR;
+    
+    private boolean canMoveLB;
+    private boolean canMoveRB;
     private int groundHeight;
     private int sideWidth;
     private World myWorld;
     int worldHeight;
     int worldWidth;
+    public int doubleT;
     int invulnTime;
     private int health;
     boolean teleporting;
@@ -53,6 +57,7 @@ public class Player extends Actor
     public Player(int coinP, int healthP, boolean d, boolean t, boolean s){
         timer = 0;
         teleporting = t;
+        doubleT = 0;
         coins = coinP;
         health = healthP;
         if(coinP == 500) greed = true;
@@ -98,7 +103,7 @@ public class Player extends Actor
 
     public void act() 
     {
-
+        
         powerUp();
         getKey();  
         move(); 
@@ -114,6 +119,7 @@ public class Player extends Actor
         if(invulnTime > 0) invulnTime--;
         bossTimer++;
         timer ++;
+        doubleT--;
     }
 
     private void fallBelow(){
@@ -212,7 +218,7 @@ public class Player extends Actor
         }
         if(health == 0){
 
-            Greenfoot.setWorld(new GameOver());
+            Greenfoot.setWorld(new GameOver(false));
         }
     }
 
@@ -254,15 +260,17 @@ public class Player extends Actor
                 }
             }
             shootCount = 0;
-            Greenfoot.playSound("Shoot.wav");
+            GreenfootSound pew = new GreenfootSound("Shoot.wav");
+            pew.setVolume(75);
+            pew.play();
         }
     }
 
     private void run ()
     {
-        if(isLeft && canMoveL)
+        if(isLeft && canMoveL && canMoveLB)
             dX = walkSpeed * -1;
-        else if(!isLeft && canMoveR)
+        else if(!isLeft && canMoveR && canMoveRB)
             dX = walkSpeed;
     }
 
@@ -275,13 +283,15 @@ public class Player extends Actor
     {
         dY= jumpHeight;
         inTheAir = true;
+        doubleT = 5;
         //jumped = false;
     }
 
     private void doubleJump(){
-        dY = doubleJumpHeight;
+        if(dY <= 0){ dY = doubleJumpHeight;
         inTheAir = true;
         jumped = true;
+    }
     }
 
     private void fall()
@@ -339,18 +349,13 @@ public class Player extends Actor
         {
             stop();
         }
-        if (Greenfoot.getKey() == ("w"))
-        {
-            if(!inTheAir) jump();
-            else if(inTheAir && !jumped) doubleJump();
-        }
-        else if( Greenfoot.getKey() == ("tab"))
+        if (Greenfoot.isKeyDown("W") || Greenfoot.getKey() == "space")
         {
             if(!inTheAir) jump();
             else if(inTheAir && !jumped) doubleJump();
         }
         else if(Greenfoot.isKeyDown("s")){
-            dY-=1;
+            dY-=fallSpeed;
         }
 
     }
@@ -405,6 +410,7 @@ public class Player extends Actor
 
     public int getHealth(){
         return health;
+
     }
 
     private void hit(){
@@ -429,25 +435,26 @@ public class Player extends Actor
         Boss b = (Boss) getOneIntersectingObject(Boss.class);
         if(b!= null ){
             if(b.getX() < getX()){
-                canMoveL = false;
+                canMoveLB = false;
                 dX+=3;
                 dY = 5;
                 inTheAir = true;
             }
             else if(b.getX() >= getX()){
-                canMoveR = false;
+                canMoveRB = false;
                 dX-=3;
                 dY = 5;
                 inTheAir = true;
 
             }
-            if(b.getY() > getY()) b.takeDamage(true);
-            else if(getY() > b.getY()) takeDamage();
+            if(b.getY() > getY() && b.isCharging) b.takeDamage(true);
+            else takeDamage();
         }
         else if( b == null){
-            canMoveL = true;
-            canMoveR = true;
+            canMoveLB = true;
+            canMoveRB = true;
         }
+        
         Noodle n = (Noodle) getOneIntersectingObject(Noodle.class);
         if(n != null){
             takeDamage();

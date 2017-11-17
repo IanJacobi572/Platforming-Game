@@ -21,9 +21,9 @@ public class CoinTotal1 extends Actor
     GreenfootImage baseImage;
     public CoinTotal1(){
         coinsInt = 10;
-        baseImage = new GreenfootImage(Integer.toString(coinsInt), 25, Color.BLACK, Color.WHITE);
-        img = new GreenfootImage(Integer.toString(coinsInt), 35, Color.BLACK, Color.WHITE);
-        setImage(baseImage);
+        img =getImage();
+        img.scale(160, 28);
+        //setImage(baseImage);
     }
 
     public void act() 
@@ -36,11 +36,12 @@ public class CoinTotal1 extends Actor
             coinsString = Greenfoot.ask("How many coins? (enter a number greater than 0, defaults to 10)");
             coinsInt = parseWithDefault(coinsString, 10);
             if(coinsInt <= 0) coinsInt = 10;
-            
+            GreenfootSound select = new GreenfootSound("Select.wav");
+            select.play();
             if(coinsString != null){
                 
-                GreenfootImage img = new GreenfootImage(Integer.toString(coinsInt), 30, Color.BLACK, Color.WHITE);
-                setImage(img);
+                //GreenfootImage img = new GreenfootImage(Integer.toString(coinsInt), 30, Color.BLACK, Color.WHITE);
+                //setImage(img);
             }
         }
         else if(Greenfoot.mouseClicked(end) ||Greenfoot.mouseClicked(two)  ){

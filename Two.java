@@ -18,9 +18,12 @@ public class Two extends Actor
     public Endless end;
     public CoinTotal1 coin;
     public Two(){
-        img = new GreenfootImage("2 min", 30, Color.BLACK, Color.WHITE);
+        //GreenfootImage.setFont(Font );
+        
+        img =getImage();
+        img.scale(160, 28);
         baseImg = new GreenfootImage("2 min", 25, Color.BLACK, Color.WHITE);
-        setImage(baseImg);
+        //setImage(baseImg);
     }
 
     public void act() 
@@ -30,12 +33,13 @@ public class Two extends Actor
         List<CoinTotal1> coinTotal1 =  getObjectsInRange(600, CoinTotal1.class);
         coin = coinTotal1.get(0);
         if(Greenfoot.mouseClicked(this)){
-
-            setImage(img);
+GreenfootSound select = new GreenfootSound("Select.wav");
+            select.play();
+            //setImage(img);
         }
         else if(Greenfoot.mouseClicked(end) || Greenfoot.mouseClicked(coin)){
 
-            setImage(baseImg);
+            //setImage(baseImg);
         }
     }    
 

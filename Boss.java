@@ -27,10 +27,13 @@ public class Boss extends Actor
     boolean isCharging = false;
     public int height = getImage().getHeight();
     public boolean justCharged = true;
+    GreenfootImage move;
+    GreenfootImage attack;
     int i = 0;
     Player main;
     public Boss(Player p){
-        GreenfootImage img = getImage();
+        attack = new GreenfootImage("NUDL COP-2.png");
+        move = getImage();
         main = p;
         //setHealthBar();
         //img.scale(200, 200);
@@ -71,8 +74,8 @@ public class Boss extends Actor
             leftBound = true;
 
         }
-        if(getY() <= 150) upperBound = true;
-        else if(getY() >= 395) upperBound = false;
+        if(main.getY()-getY() >= 100) upperBound = true;
+        else if(main.getY()-getY() <= -100) upperBound = false;
         if(!isCharging && upperBound) setLocation(getX(), getY()+1);
         else if(!isCharging && !upperBound) setLocation(getX(), getY()-1);
     }
@@ -99,10 +102,12 @@ public class Boss extends Actor
         if(timer <= 0) {
             justCharged = false;
             if(!ready && rightBound){
+                
                 turn(-90);
                 ready = true;
             }
             else if(!ready && leftBound){
+                
                 turn(90);
                 ready = true;
             }
@@ -110,10 +115,12 @@ public class Boss extends Actor
         else {
             justCharged = true;
             if(ready && leftBound){
+                
                 turn(90);
                 ready = false;
             }
             if(ready && rightBound){
+                
                 turn(-90);
                 ready = false;
             }
@@ -123,16 +130,22 @@ public class Boss extends Actor
         if(!justCharged){
             if(main.getY()-getY() < 10 && main.getY() - getY() > -10 && rightBound){
                 setLocation(getX()-10, getY());
+                setImage(attack);
                 isCharging = true;
                 if(getX() == 60){
                     timer = t;
+                    
+                    setImage(move);
                     setLocation(getX()-10, getY());
                 }
             }
             else if(isCharging && rightBound){
                 setLocation(getX()-10, getY());
                 isCharging = true;
+                setImage(attack);
                 if(getX() == 60){
+                    setImage(move);
+                    
                     timer = t;
                     setLocation(getX()-10, getY());
                 }
@@ -140,14 +153,18 @@ public class Boss extends Actor
             else if(main.getY()-getY() < 10 && main.getY() - getY() > -10 && leftBound){
                 setLocation(getX()+10, getY());
                 isCharging = true;
+                setImage(attack);
                 if(getX() == 540){
+                    setImage(move);
                     timer = t;
                     setLocation(getX()+10, getY());
                 }
             }
             else if(isCharging && leftBound){
                 setLocation(getX()+10, getY());
+                setImage(attack);
                 if(getX() == 540){
+                    setImage(move);
                     timer = t;
                     setLocation(getX()+10, getY());
                 }
@@ -172,7 +189,7 @@ public class Boss extends Actor
                 invulnTimer = 45;
             }
         }
-        if(health == 0) Greenfoot.stop();
+        if(health == 0) Greenfoot.setWorld(new GameOver(true));
         setHealthBar();
     }
 
